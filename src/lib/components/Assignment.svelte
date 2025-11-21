@@ -1,13 +1,17 @@
 <script lang="ts">
   import type { Assignment, Employee, Client } from "$lib/types";
-
+  import EmployeeModal from "$lib/components/EmployeeModal.svelte";
+  import ClientModal from "$lib/components/ClientModal.svelte";
+  import AssignmentModal from "$lib/components/AssignmentModal.svelte";
   interface Props {
     assignment: Assignment;
     employee: Employee;
     client: Client;
-    openPopover: (e: MouseEvent, type: "employee" | "client" | "assignment", itemId: string) => void;
+    employees: Employee[];
+    clients: Client[];
+    client_mappings: Map<string, string>;
   }
-  let { assignment, employee, client, openPopover }: Props = $props();
+  let { assignment, employee, client, employees, clients, client_mappings }: Props = $props();
 </script>
 
 <div
@@ -15,60 +19,23 @@
 >
   <div class="flex items-center justify-between mb-2">
     <div class="flex items-center justify-between gap-2 w-full">
-      {#if assignment.abnormality_score == 0}
+      {#if assignment.abnormality_score == 1}
         <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
           Entspricht üblichem Muster
         </span>
+      {:else}
+        <span></span>
       {/if}
-      <button
-        onclick={(e) => {
-          e.stopPropagation();
-          openPopover(e, "assignment", assignment.ma + assignment.klient);
-        }}
-        class="p-1.5 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors"
-        aria-label="Open assignment options"
-        title="Assignment options"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-          />
-        </svg>
-      </button>
+      <AssignmentModal {assignment} {employee} {client} />
     </div>
   </div>
   <div class="flex items-center justify-start gap-2">
     <div class="flex items-center gap-2">
-      <button
-        onclick={(e) => {
-          e.stopPropagation();
-          openPopover(e, "employee", employee.id);
-        }}
-        class="text-blue-600 hover:text-blue-800 font-medium hover:underline transition-colors text-left"
-      >
-        {employee.id}
-      </button>
+      <EmployeeModal {employee} client_mappings={client_mappings} clients={clients} />
     </div>
     <div class="text-gray-400">↔</div>
     <div class="flex items-center gap-2">
-      <button
-        onclick={(e) => {
-          e.stopPropagation();
-          openPopover(e, "client", client.id);
-        }}
-        class="text-green-600 hover:text-green-800 font-medium hover:underline transition-colors text-left"
-      >
-        {client.id}
-      </button>
+      <ClientModal {client} employees={employees} />
     </div>
   </div>
 </div>

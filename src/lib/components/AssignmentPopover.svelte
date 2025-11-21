@@ -13,5 +13,5 @@
 </script>
 
 <div class="m-2">
-  <button class="bg-blue-500 text-white px-4 py-2 rounded-md" onclick={() => {}}>Verbieten</button>
+  <button type="button" class="btn variant-filled" onclick={() => {}}>Verbieten</button>
 </div>

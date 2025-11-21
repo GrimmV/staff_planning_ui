@@ -1,11 +1,31 @@
 export interface Employee {
 	id: string;
 	name: string;
+	availability: number[];
+	available_until: string;
+	cl_experience: object;
+	short_term_cl_experience: object;
+	school_experience: object;
+	hasCar: boolean;
+	qualifications: string[];
+	timeToSchool: object;
+	sex: string;
 }
 
 export interface Client {
 	id: string;
 	name: string;
+	available_until: string;
+	neededQualifications: string[];
+	priority: number;
+	requiredSex: string;
+	school: string;
+	timeWindow: number[];
+}
+
+export interface IdAssignment {
+	ma: string;
+	klient: string;
 }
 
 export interface Assignment {
@@ -53,4 +73,11 @@ export interface ApiResponse {
 	assignment_info: AssignmentInfo;
 	clients: Client[];
 	mas: Employee[];
+}
+
+export interface HardConstraint {
+	forced_employees: string[];
+	forced_clients: string[];
+	banned_assignments: IdAssignment[];
+	forced_assignments: IdAssignment[];
 }
